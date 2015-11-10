@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.persistence.EntityManager;
 
 
-public class TestClass {
+public class TrialClass {
 
 	public static void main(String[] args) {
 		ProductDB db = new ProductDB();
