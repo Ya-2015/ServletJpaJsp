@@ -7,6 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
+import models.Lineitem;
+import models.Product;
+import models.Shoppinguser;
+
 public class ProductDB {
 	
 	public ArrayList<Product> getAllProducts(){

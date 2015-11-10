@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Lineitem;
+import models.Product;
+
 /**
  * Servlet implementation class ConfirmationServlet
  */
