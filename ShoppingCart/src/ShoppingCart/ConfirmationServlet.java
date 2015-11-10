@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,25 +60,41 @@ public class ConfirmationServlet extends HttpServlet {
 		item.setProductname(p.getProdname());
 		item.setProductcost(qty * p.getPrice());
 		item.setQuantity(new BigDecimal(qty));
+//		item.setPurchasedate(new Date());
 		
-		boolean isSuccess = db.addNewLineitem(item);
-		if (isSuccess){
+		//add to session
+		ArrayList<Lineitem> itemlist = (ArrayList<Lineitem>) request.getSession(false).getAttribute("items");
+
+		if (itemlist == null){
+			itemlist = new ArrayList<Lineitem>();
+		}
+		itemlist.add(item);
 		
-			//
-			try {
-				request.setAttribute("qty", qty);
-				getServletContext().getRequestDispatcher("/Confirmation.jsp").forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		//add to database
+		if ((request.getSession(false).getAttribute("username") != null)){
+			int userid = (int) request.getSession(false).getAttribute("userid");
+			item.setUserid(userid);
+			
+			//add to database
+			db.addNewLineitem(item);
 		}
-		else{
-			printError(response);
+		
+		//forward data
+		HttpSession session = request.getSession();
+		session.setAttribute("items", itemlist);
+		session.setAttribute("subtotal", qty * p.getPrice());
+		//
+		try {
+			request.setAttribute("qty", qty);
+			getServletContext().getRequestDispatcher("/Confirmation.jsp").forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 	
 	private void printError(HttpServletResponse response){

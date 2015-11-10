@@ -10,27 +10,48 @@
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
-<title>Product List</title>
+<title>Home</title>
 </head>
 <body>
-<div class="container">
-    <nav class="navbar navbar-inverse">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Home</a>
-          <a class="navbar-brand" href="Checkout">Checkout</a>
-        </div>
-      </div>
-    </nav>
-</div>
 
 <div class="container">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Shopping Cart</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="HomeServlet">Home</a></li>
+        <c:if test="${not empty items}">
+        <li><a href="Checkout">Checkout</a></li>
+        </c:if>
+        <c:if test="${ empty items}">
+        	<c:if test="${ not empty username}">
+        		<li class="active"><a href="Checkout">Checkout</a></li>
+        	</c:if>
+        </c:if>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <c:if test="${not empty username}">
+      		<li><a href="#"></span> Welcome ${username }</a></li>
+    		 <li><a href="LogoutServlet"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		</c:if>
+       <c:if test="${empty username}">
+    		 <li><a href="Login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+		</c:if>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
+
+<c:if test="${not empty username}">
+<div class="container" style ="background:url('https://newevolutiondesigns.com/images/freebies/white-wallpaper-9.jpg')">
+</c:if>
+<c:if test="${empty username}">
+<div class="container">
+</c:if>
 <h2>Product List</h2>
 <form action="" method="post">
 <table class="table table-bordered">

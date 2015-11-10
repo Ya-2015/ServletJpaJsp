@@ -1,10 +1,9 @@
 package ShoppingCart;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -30,7 +29,12 @@ public class Lineitem implements Serializable {
 
 	private String productname;
 
+	@Temporal(TemporalType.DATE)
+	private Date purchasedate;
+
 	private BigDecimal quantity;
+
+	private int userid;
 
 	public Lineitem() {
 	}
@@ -75,12 +79,28 @@ public class Lineitem implements Serializable {
 		this.productname = productname;
 	}
 
+	public Date getPurchasedate() {
+		return this.purchasedate;
+	}
+
+	public void setPurchasedate(Date purchasedate) {
+		this.purchasedate = purchasedate;
+	}
+
 	public BigDecimal getQuantity() {
 		return this.quantity;
 	}
 
 	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity;
+	}
+
+	public int getUserid() {
+		return this.userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
 	}
 
 }

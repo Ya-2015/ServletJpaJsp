@@ -90,12 +90,34 @@ public class ProductDB {
 		return isSuccess;
 	}
 	
+	public boolean updateLineitem(Lineitem item){
+		boolean isSuccess = false;
+		
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		
+		trans.begin();
+		
+		try{
+			em.merge(item);
+			trans.commit();
+			isSuccess = true;
+		}catch(Exception e){
+			System.out.println(e);
+			trans.rollback();
+		}finally{
+			em.close();
+		}
+		
+		return isSuccess;
+	}
+	
 	public ArrayList<Lineitem> getLineitems(){
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		List<Lineitem> fd = null;
 		
 		try {
-			String sql = "select p from Lineitem p";
+			String sql = "select p from Lineitem p ORDER BY p.purchaseno asc";
 			TypedQuery<Lineitem> q = em.createQuery(sql, Lineitem.class);
 			
 			fd = q.getResultList();
@@ -107,6 +129,46 @@ public class ProductDB {
 		}
 		
 		return new ArrayList<Lineitem>(fd);
+	}
+	
+	public ArrayList<Lineitem> getLineitemsByUser(int userid){
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		List<Lineitem> fd = null;
+		
+		try {
+			String sql = "select p from Lineitem p where p.userid = :userid";
+			TypedQuery<Lineitem> q = em.createQuery(sql, Lineitem.class);
+			q.setParameter("userid", userid);
+			
+			fd = q.getResultList();
+			
+		} catch (Exception e){
+			System.out.println(e);
+		} finally {
+			em.close();
+		}
+		
+		return new ArrayList<Lineitem>(fd);
+	}
+	
+	public Object getTotalCostByUser(int userid){
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		Object fd = null;
+		
+		try {
+			String sql = "select sum(p.productcost) from Lineitem p where p.userid = :userid";
+			TypedQuery<Lineitem> q = em.createQuery(sql, Lineitem.class);
+			q.setParameter("userid", userid);
+			
+			fd = q.getSingleResult();
+			
+		} catch (Exception e){
+			System.out.println(e);
+		} finally {
+			em.close();
+		}
+		
+		return fd;
 	}
 	
 	public void removeLineitem(Lineitem item){
@@ -123,6 +185,74 @@ public class ProductDB {
 		}finally{
 			em.close();
 		}
+	}
+	
+	public int checkUser(String username, String userpwd){
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		Shoppinguser fd = null;
+		
+		try {
+			String sql = "select p from Shoppinguser p where p.username = :username and p.userpwd = :userpwd";
+			TypedQuery<Shoppinguser> q = em.createQuery(sql, Shoppinguser.class);
+			q.setParameter("username", username);
+			q.setParameter("userpwd", userpwd);
+			
+			fd = q.getSingleResult();
+			
+		} catch (Exception e){
+			System.out.println(e);
+		} finally {
+			em.close();
+		}
+		
+		int userid = -1;
+		if(fd!=null){
+			userid = fd.getUserid();
+		}
+		
+		return userid;
+	}
+	
+	public boolean checkUserByName(String username){
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		Shoppinguser fd = null;
+		
+		try {
+			String sql = "select p from Shoppinguser p where p.username = :username";
+			TypedQuery<Shoppinguser> q = em.createQuery(sql, Shoppinguser.class);
+			q.setParameter("username", username);
+			
+			fd = q.getSingleResult();
+			
+		} catch (Exception e){
+			System.out.println(e);
+		} finally {
+			em.close();
+		}
+		
+		return (fd!=null?true:false);
+	}
+	
+	public boolean addNewUser(Shoppinguser user){
+		boolean isSuccess = false;
+		
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		
+		trans.begin();
+		
+		try{
+			em.persist(user);
+			trans.commit();
+			isSuccess = true;
+		}catch(Exception e){
+			System.out.println(e);
+			trans.rollback();
+		}finally{
+			em.close();
+		}
+		
+		return isSuccess;
 	}
 	
 }
