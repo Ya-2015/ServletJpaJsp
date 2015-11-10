@@ -1,4 +1,4 @@
-package ShoppingCart;
+package DBUtil;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

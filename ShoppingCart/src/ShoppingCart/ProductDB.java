@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
+import DBUtil.DBUtil;
 import models.Lineitem;
 import models.Product;
 import models.Shoppinguser;
